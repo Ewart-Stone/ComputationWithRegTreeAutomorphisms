@@ -1,7 +1,7 @@
-#
-#
-#
-#
+#This class implements the approximation automorphism for a regular tree
+#as a decorated tree structure using the AutEdge and AutNode sublasses
+#Methods of operations performbable with the AutRegTree are also implemented
+#Developed by Ewart Stone
 
 import random
 import json
@@ -361,18 +361,6 @@ class AutRegTree:
             out = origin.copy()
             out.append(step)
             return out
-        
-    #preconditions: origin and dest are valid node array paths
-    #postconditions: returns the next step to take to get from origin to dest
-    def getStep(self, origin, dest):
-        #determine next colour step to take in path
-        
-        if(len(origin) < len(dest)):
-            step = dest[len(dest) - 1]
-        else:
-            step = origin[len(origin) - 1]
-
-        return step
 
     #preconditions: p1 and p2 are arrays of positive integers
     #postconditions: creates a path from p1 to p2 and returns an array result

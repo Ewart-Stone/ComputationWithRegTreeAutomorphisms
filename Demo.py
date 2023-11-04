@@ -22,18 +22,18 @@ def main():
 
     #saving and loading procedure
     #filePath="C://someFolder" is optional
-    a.saveToJsonFile(fileName="test")
+    #a.saveToJsonFile(fileName="test")
 
-    b = AutConstructor.loadFromFile("test.json")
+    #b = AutConstructor.loadFromFile("test.json")
 
     #example composition call
-    a.compose(b)
+    #a.compose(b)
 
     #example inverse call
-    c = a.getInverse()
+    #c = a.getInverse()
 
     #example merge
-    d = a.merge(b)
+    #d = a.merge(b)
 
     #example guided construction
     #e = AutConstructor.constructGuided()

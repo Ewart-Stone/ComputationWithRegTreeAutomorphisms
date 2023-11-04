@@ -1,7 +1,7 @@
-#
-#
-#
-#
+#This class defines a node for automorphisms of regular trees
+#and controls simple operations around storing and retrieving
+#their information
+#Developed by Ewart Stone
 
 from AutEdge import AutEdge
 
@@ -21,6 +21,9 @@ class AutNode:
             self.edges.append(None)
             self.localAction.append((-1, -1))
 
+    #preconditions: none
+    #postconditions: edges element at index col is set to edge param
+    #   localAction for edge is added
     def addEdge(self, edge, col):
         #add edge
         self.edges[col] = edge
@@ -29,11 +32,19 @@ class AutNode:
         #record possible local action for that edge
         self.localAction[col] = (col, -1)
 
+    #preconditions: edge that is being set is already allocated within tree
+    #postconditions: edges element at index col is set to edge param
     def setEdge(self, edge, col):
         self.edges[col] = edge
         self.edgeNum += 1
 
     def getNode(self, index):
+        if index > len(self.edges) - 1:
+            return None
+        
+        if self.edges[index] == None:
+            return None
+
         if(self.edges[index].nodes[0].path != self.path):
             return self.edges[index].nodes[0]
         else:
