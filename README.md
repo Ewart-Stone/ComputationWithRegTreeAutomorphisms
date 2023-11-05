@@ -6,10 +6,14 @@ to handle basic construction and computation using the automorphisms
 of infinite regular trees.
 
 ## Example Code
+> Example code is provided on the Github repository at:
+> 
+> https://github.com/Ewart-Stone/ComputationWithRegTreeAutomorphisms
+
 > Demo.py shows example usages of functions intended to be used 
 by external code
-
-> additional functions for retrieving individual nodes and 
+>
+> Additional functions for retrieving individual nodes and 
 printing node information are also present within AutRegTree objects
 
 ## Useful Functions
