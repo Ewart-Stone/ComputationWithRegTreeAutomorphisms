@@ -72,14 +72,14 @@ def constructGuided():
 
         while not finishedLaInput:
             #print node
-            print("-- Current Node --")
+            print("\n-- Current Node --")
             selectedNode.print()
 
             #take local action inpit
             #assumes you aren't modifying an existing tuple
-            laInput = int(input("Enter the local action colour to add: "))
+            laInput = int(input("Enter the local action colour to add (integer): "))
 
-            laImageInput = int(input("Enter the image for the colour: "))
+            laImageInput = int(input("Enter the image for the colour (integer): "))
 
             la = (laInput, laImageInput)
 
@@ -113,7 +113,9 @@ def constructGuided():
         selectedNode.setEdge(newEdge, la[0])
         newNode.setEdge(newEdge, la[0])
 
-        nextStep = input("Edit another tuple (e), Select a new Node (s), Finish tree (f)")
+        nextStep = input("Add tuple (a), Select a new Node (s), Finish tree (f) ")
+
+        print("\n")
 
         if nextStep == "f" or nextStep == "F":
             break

@@ -496,6 +496,9 @@ class AutRegTree:
             #take step
             current = current.getNode(nextStep)
 
+            if current == None:
+                break
+
         #while pos < len(nodePath):
         #
         #    if current.edges[nodePath[pos]] == None:
@@ -754,8 +757,19 @@ class AutRegTree:
 
             for count in range(len(longer.localAction)):
 
+                #if tuple is only in longer action then it can be merged
+                if count >= len(shorter.localAction):
+
+                    #if la is defined
+                    if longer.localAction[count][0] != -1:
+                        if lastStep != count:
+                            toAdd.append(longer.getNode(longer.localAction[count][0]))
+
+                        #set local action in new node
+                        newNode.localAction[count] = (longer.localAction[count][0], longer.localAction[count][1])
+
                 #0th local action tuple -1 if not assigned
-                if longer.localAction[count][0] == -1 and shorter.localAction[count][0] != -1:
+                elif longer.localAction[count][0] == -1 and shorter.localAction[count][0] != -1:
                     
                     if lastStep != count:
                         toAdd.append(shorter.getNode(shorter.localAction[count][0]))
@@ -801,6 +815,7 @@ class AutRegTree:
         return True
 
     def mergeSingleNode(self, prevOutNode, node, newTree):
+
         #record last step
         if len(prevOutNode.path) > len(node.path):
             lastStep = prevOutNode.path[len(prevOutNode.path) - 1]
@@ -895,11 +910,15 @@ class AutRegTree:
                     #print(startingNode.path)
                     startingTargNode = node
                     break
+        
+        #if no nodes matching to compose then return null
+        if startingTargNode == None:
+            return None
 
         composedTreeNode = composedTree.getNode(startingTargNode.path)
 
         if startingTargNode != None:
-            self.composedNode(startingTargNode, startingNode, composedTreeNode, -1)
+            self.composedNode(startingTargNode, startingNode, composedTreeNode, -1, composedTree)
 
             refNode = composedTree.getNode(composedTree.reference[0])
             composedTree.reference = (refNode.path.copy(), refNode.imagePath.copy())
@@ -910,7 +929,7 @@ class AutRegTree:
     #preconditions:
     #postconditions: composes the composedTreeNode from this composes target
     # and recursively does so for the rest of the operation
-    def composedNode(self, targetAutNode, currentNode, composedTreeNode, sourceIndex):
+    def composedNode(self, targetAutNode, currentNode, composedTreeNode, sourceIndex, composedTree):
         
         #print(targetAutNode.path)
         #print(composedTreeNode.path)
@@ -938,7 +957,48 @@ class AutRegTree:
                         nextCurrentNode = currentNode.getNode(tuple[1])
 
                         #recursive composition
-                        self.composedNode(nextTargNode, nextCurrentNode, nextComposedNode, tuple[0])
+                        self.composedNode(nextTargNode, nextCurrentNode, nextComposedNode, tuple[0], composedTree)
+
+                else:
+                    #redefined to -1 value
+                    
+                    #recursivly record connected nodes from tree
+                    output = []
+                    composedTree.addNodeToList(tuple[0], composedTreeNode.getNode(tuple[0]), output)
+
+                    #remove recorded nodes
+                    for node in output:
+                        composedTree.nodes.remove(node)
+
+                    #remove connection to nodes
+                    composedTreeNode.localAction[tuple[0]] = (-1, -1)
+                    composedTreeNode.edges[tuple[0]] = None
+                    composedTreeNode.edgeNum -= 1
+
+
+
+            elif tuple[1] != -1:
+                #not defined in composer therefore remove
+                    
+                #recursivly record connected nodes from tree
+                output = []
+                self.addNodeToList(tuple[0], composedTreeNode.getNode(tuple[0]), output)
+
+                #remove recorded nodes
+                for node in output:
+                    self.nodes.remove(node)
+
+                #remove connection to nodes
+                composedTreeNode.localAction[tuple[0]] = (-1, -1)
+                composedTreeNode.edges[tuple[0]] = None
+                composedTreeNode.edgeNum -= 1
+                
+    def addNodeToList(self, source, currentNode, output):
+        output.append(currentNode)
+
+        for la in currentNode.localAction:
+            if la[0] != -1 and la[0] != source:
+                self.addNodeToList(la[0], currentNode.getNode(la[0]), output)
 
     def copyTree(self):
         out = AutRegTree()

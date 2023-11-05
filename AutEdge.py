@@ -10,7 +10,9 @@ class AutEdge:
         #array of nodes connected by the edge
             #index 0 closer to origin (node of empty string)
             #index 1 further from origin
-        if len(nodes[0].path) < len(nodes[1].path):
+        if nodes[0].path == None or nodes[1].path == None:
+            self.nodes = nodes
+        elif len(nodes[0].path) < len(nodes[1].path):
             self.nodes = nodes
         else:
             self.nodes = [nodes[1], nodes[0]]
